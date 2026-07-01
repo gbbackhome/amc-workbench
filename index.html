@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMC 전략 워크벤치</title>
+<style>
+  :root{color-scheme:light;--bg:#f6f7f9;--card:#fff;--line:#e6e8ec;--ink:#1e242b;--mut:#6b7280;
+    --blue:#2563eb;--green:#16a34a;--amber:#d97706;--red:#dc2626;--chip:#eef2ff;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Noto Sans KR",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5;padding:18px;}
+  .wrap{max-width:1120px;margin:0 auto;}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+  .logo{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);
+    display:flex;align-items:center;justify-content:center;font-size:20px;}
+  h1{font-size:20px;font-weight:800;letter-spacing:-.3px;}
+  .sub{font-size:12px;color:var(--mut);}
+  .discl{font-size:11.5px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;
+    padding:8px 12px;margin:12px 0 14px;}
+  nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  nav button{font:inherit;font-size:13px;font-weight:700;border:1px solid var(--line);background:#fff;
+    color:var(--mut);border-radius:999px;padding:7px 14px;cursor:pointer;}
+  nav button.on{background:#1e293b;color:#fff;border-color:#1e293b;}
+  .tab{display:none;}
+  .tab.on{display:block;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+  h2{font-size:16px;font-weight:800;margin-bottom:4px;}
+  .lead{font-size:12.5px;color:var(--mut);margin-bottom:12px;}
+  textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:9px;padding:10px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;resize:vertical;}
+  .btn{font:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--line);background:#fff;
+    border-radius:8px;padding:7px 12px;cursor:pointer;margin:8px 6px 0 0;}
+  .btn.pri{background:var(--blue);color:#fff;border-color:var(--blue);}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px;}
+  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:right;white-space:nowrap;}
+  th:first-child,td:first-child{text-align:left;}
+  th{color:var(--mut);font-weight:700;font-size:11.5px;}
+  .tag{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;color:#fff;}
+  .t-ok{background:var(--green);}.t-over{background:var(--red);}.t-under{background:var(--amber);}
+  .t-cap{background:#7c3aed;}.t-up{background:var(--green);}.t-down{background:var(--red);}
+  .t-hold{background:var(--amber);}.t-warn{background:var(--red);}
+  .alert{font-size:12.5px;padding:8px 11px;border-radius:9px;margin-bottom:6px;}
+  .a-red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+  .a-amber{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+  .a-ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;}
+  .fld{display:flex;flex-direction:column;gap:3px;}
+  .fld label{font-size:11px;color:var(--mut);font-weight:700;}
+  .fld input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:12.5px;width:110px;}
+  .note{font-size:11px;color:var(--mut);margin-top:8px;}
+  .mtx{display:grid;grid-template-columns:60px 1fr 1fr;grid-auto-rows:minmax(70px,auto);gap:6px;margin-top:12px;}
+  .mcell{border:1px solid var(--line);border-radius:9px;padding:8px;font-size:11.5px;background:#fafbfc;}
+  .mcell b{font-size:11px;}
+  .maxis{display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mut);font-weight:700;text-align:center;}
+  .pill2{display:inline-block;font-size:11px;background:var(--chip);color:#3730a3;border-radius:6px;padding:1px 6px;margin:2px 3px 0 0;}
+  ul.todo{margin:6px 0 0 18px;font-size:13px;}ul.todo li{margin-bottom:6px;}
+  footer{text-align:center;font-size:11px;color:#9aa3af;margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">🛒</div>
+    <div><h1>AMC 전략 워크벤치</h1><div class="sub">아마존 광고 전략 도구 · 오프라인 실행 · 데이터는 이 브라우저(localStorage)에만 저장</div></div>
+  </header>
+  <div class="discl">⚠️ 이 툴은 <b>공개 공식 + 가상의 샘플 데이터</b>로만 작동합니다. 실제 클라이언트명·기밀 데이터를 입력하면 이 브라우저에만 저장되지만, <b>공개 URL로 배포할 파일에는 절대 실제 데이터를 하드코딩하지 마세요.</b> 입력값은 외부로 전송되지 않습니다.</div>
+
+  <nav>
+    <button data-t="todo" class="on">📋 오늘 할 일</button>
+    <button data-t="pace">🚦 페이싱 신호등</button>
+    <button data-t="rebal">⚖️ 리밸런싱 매트릭스</button>
+    <button data-t="aud">🎯 오디언스 & A/B</button>
+  </nav>
+
+  <section id="todo" class="tab on">
+    <div class="card">
+      <h2>오늘 뭘 해볼까</h2>
+      <p class="lead">데이터만 붙여넣으면 도는 3가지. 전부 Amazon Ads 콘솔/DSP에서 뽑을 수 있는 데이터예요.</p>
+      <ul class="todo">
+        <li><b>페이싱 점검</b> — 캠페인/라인아이템 예산·소진 CSV를 뽑아 🚦 탭에 붙여넣고, 조기 소진/과소 소진을 골라내기.</li>
+        <li><b>예산 리밸런싱 후보</b> — ⚖️ 탭에서 "감액→증액" 후보를 뽑아 클라이언트 컨펌 자료로.</li>
+        <li><b>A/B 스케줄</b> — 밀린 오디언스 테스트를 🎯 탭 스케줄러에 넣어 충돌 없는 주차별 일정 만들기.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="pace" class="tab">
+    <div class="card">
+      <h2>🚦 페이싱 신호등 — 예산 소진 데일리 체크</h2>
+      <p class="lead">형식: <code>이름, 총예산, 누적소진, 경과일수, 총일수</code> (한 줄에 하나, 콤마 구분). 헤더행은 무시돼요.</p>
+      <textarea id="pace-in"></textarea>
+      <div>
+        <button class="btn pri" onclick="P.run()">계산</button>
+        <button class="btn" onclick="P.sample()">샘플 채우기</button>
+        <button class="btn" onclick="P.copy()">결과 복사</button>
+      </div>
+      <div id="pace-alerts" style="margin-top:12px;"></div>
+      <div id="pace-out"></div>
+      <p class="note">페이싱% = 누적소진 ÷ (총예산 × 경과일/총일) × 100. 90~110%=정상, &gt;110%=과다(조기소진 위험), &lt;90%=과소. 🟣캡조기소진 = 소진율≥90%인데 기간은 60%도 안 지남.</p>
+    </div>
+  </section>
+
+  <section id="rebal" class="tab">
+    <div class="card">
+      <h2>⚖️ 효율 × 페이싱 리밸런싱 매트릭스</h2>
+      <p class="lead">형식: <code>이름, 소진, 매출, 페이싱%</code> · 아래 목표 ROAS를 기준으로 4분면 배치합니다.</p>
+      <div class="row">
+        <div class="fld"><label>목표 ROAS</label><input id="rb-target" type="number" value="3" step="0.1"></div>
+        <div class="fld"><label>재배분할 총예산 풀(선택)</label><input id="rb-pool" type="number" value="0"></div>
+      </div>
+      <textarea id="rb-in" style="margin-top:10px;"></textarea>
+      <div>
+        <button class="btn pri" onclick="R.run()">분석</button>
+        <button class="btn" onclick="R.sample()">샘플 채우기</button>
+      </div>
+      <div id="rb-mtx"></div>
+      <div id="rb-out"></div>
+      <p class="note">ROAS=매출÷소진. 고효율=ROAS≥목표. 캡상향(고효율·과소진)·증액(고효율·여유)·감액(저효율·과소진)·타게팅점검(저효율·부진). 재배분은 <b>제안·검증용</b>이며 자동 실행이 아닙니다.</p>
+    </div>
+  </section>
+
+  <section id="aud" class="tab">
+    <div class="card">
+      <h2>🎯 오디언스 오버랩 체커</h2>
+      <p class="lead">형식: <code>이름, 추정규모, 제외오디언스(;로 여러개)</code>. 규모비 기반 오버랩 근사예요(실제 Affinity Index로 검증 권장).</p>
+      <textarea id="au-in"></textarea>
+      <div>
+        <button class="btn pri" onclick="A.run()">체크</button>
+        <button class="btn" onclick="A.sample()">샘플 채우기</button>
+      </div>
+      <div id="au-out"></div>
+    </div>
+    <div class="card">
+      <h2>🗓️ A/B 테스트 스케줄러</h2>
+      <p class="lead">위 오디언스들을 충돌(오버랩) 없이 주차별 슬롯에 배치합니다.</p>
+      <div class="row">
+        <div class="fld"><label>동시 슬롯 수</label><input id="sc-slots" type="number" value="2"></div>
+        <div class="fld"><label>테스트 기간(주)</label><input id="sc-weeks" type="number" value="2"></div>
+        <div class="fld"><label>오버랩 경고 임계(%)</label><input id="sc-th" type="number" value="35"></div>
+      </div>
+      <div><button class="btn pri" onclick="A.schedule()">스케줄 생성</button></div>
+      <div id="sc-out"></div>
+    </div>
+  </section>
+
+  <footer>AMC 전략 워크벤치 · 오프라인 · 참고용(투자·법률·기밀 조언 아님) · 입력 데이터는 외부 전송 없음</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const num=v=>{if(v==null)return 0;const n=parseFloat(String(v).replace(/[, %$]/g,''));return isNaN(n)?0:n;};
+const won=n=>Math.round(n).toLocaleString();
+const LS=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){}};
+
+function parseRows(txt){
+  return txt.split(/\n/).map(l=>l.trim()).filter(l=>l&&!/^(이름|name|캠페인)/i.test(l))
+    .map(l=>l.split(/[,\t]/).map(c=>c.trim()));
+}
+function tabs(){
+  document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); $(b.dataset.t).classList.add('on');
+  });
+}
+
+/* ---------- 페이싱 ---------- */
+const P={
+  sampleData:`이름, 총예산, 누적소진, 경과일수, 총일수
+캠페인-A, 3000000, 2600000, 12, 30
+캠페인-B, 5000000, 1200000, 18, 30
+캠페인-C, 2000000, 1050000, 15, 30
+라인아이템-D, 1500000, 1480000, 10, 30
+라인아이템-E, 4000000, 1900000, 15, 30`,
+  sample(){$('pace-in').value=this.sampleData; this.run();},
+  run(){
+    const rows=parseRows($('pace-in').value); LS('amc_pace',$('pace-in').value);
+    if(!rows.length){$('pace-out').innerHTML='<p class="note">데이터를 넣고 계산을 눌러줘.</p>';$('pace-alerts').innerHTML='';return;}
+    let alerts=[]; const out=rows.map(c=>{
+      const name=c[0]||'-', bud=num(c[1]), spent=num(c[2]), el=num(c[3]), tot=num(c[4])||1;
+      const elapsedFrac=el/tot;
+      const pacing= bud*elapsedFrac>0 ? spent/(bud*elapsedFrac)*100 : 0;
+      const util= bud>0? spent/bud*100 : 0;
+      const remBud=bud-spent, remDay=Math.max(tot-el,0), needDaily= remDay>0? remBud/remDay:0;
+      const capEarly= util>=90 && elapsedFrac<=0.6;
+      let tag,cls;
+      if(pacing>110){tag='과다소진';cls='t-over';} else if(pacing<90){tag='과소소진';cls='t-under';} else {tag='정상';cls='t-ok';}
+      if(capEarly){alerts.push(['a-red',`🟣 ${name} — 소진율 ${Math.round(util)}%인데 기간은 ${Math.round(elapsedFrac*100)}%밖에 안 지남 → 예산 조기 소진 위험`]);}
+      else if(pacing>110){alerts.push(['a-red',`🔴 ${name} — 페이싱 ${Math.round(pacing)}% → 과다 소진, 캡/입찰 점검`]);}
+      else if(pacing<90){alerts.push(['a-amber',`🟡 ${name} — 페이싱 ${Math.round(pacing)}% → 과소 소진, 예산/도달 점검`]);}
+      return {name,bud,spent,pacing,util,remBud,remDay,needDaily,capEarly,tag,cls};
+    });
+    $('pace-alerts').innerHTML = alerts.length? alerts.map(a=>`<div class="alert ${a[0]}">${a[1]}</div>`).join('')
+      : '<div class="alert a-ok">✅ 조기소진·과다/과소 소진 경고 없음. 페이싱 양호.</div>';
+    this.last=out;
+    $('pace-out').innerHTML=`<table><thead><tr><th>이름</th><th>총예산</th><th>누적소진</th><th>소진율</th><th>페이싱</th><th>남은예산</th><th>남은일</th><th>필요 일소진</th><th>상태</th></tr></thead><tbody>`+
+      out.map(r=>`<tr><td>${r.name}</td><td>${won(r.bud)}</td><td>${won(r.spent)}</td><td>${Math.round(r.util)}%</td><td>${Math.round(r.pacing)}%</td><td>${won(r.remBud)}</td><td>${r.remDay}</td><td>${won(r.needDaily)}</td><td><span class="tag ${r.cls}">${r.tag}</span>${r.capEarly?' <span class="tag t-cap">캡조기</span>':''}</td></tr>`).join('')+
+      `</tbody></table>`;
+  },
+  copy(){
+    if(!this.last)return;
+    const h=['이름','총예산','누적소진','소진율%','페이싱%','남은예산','남은일','필요일소진','상태'].join('\t');
+    const b=this.last.map(r=>[r.name,Math.round(r.bud),Math.round(r.spent),Math.round(r.util),Math.round(r.pacing),Math.round(r.remBud),r.remDay,Math.round(r.needDaily),r.tag].join('\t')).join('\n');
+    navigator.clipboard.writeText(h+'\n'+b).then(()=>alert('결과를 클립보드에 복사했어요. 스프레드시트에 붙여넣기(Ctrl+V) 하세요.'));
+  }
+};
+
+/* ---------- 리밸런싱 ---------- */
+const R={
+  sampleData:`이름, 소진, 매출, 페이싱%
+캠페인-A, 2600000, 9200000, 130
+캠페인-B, 1200000, 2100000, 70
+캠페인-C, 1050000, 4600000, 105
+캠페인-D, 1480000, 2000000, 118
+캠페인-E, 1900000, 8300000, 88`,
+  sample(){$('rb-in').value=this.sampleData; this.run();},
+  run(){
+    const rows=parseRows($('rb-in').value); LS('amc_rb',$('rb-in').value);
+    const target=num($('rb-target').value)||3;
+    if(!rows.length){$('rb-out').innerHTML='';$('rb-mtx').innerHTML='';return;}
+    const items=rows.map(c=>{
+      const name=c[0]||'-',spent=num(c[1]),rev=num(c[2]),pac=num(c[3]);
+      const roas= spent>0? rev/spent:0;
+      const hiEff= roas>=target, hiPace= pac>=100;
+      let label,cls;
+      if(hiEff&&hiPace){label='캡상향';cls='t-cap';}
+      else if(hiEff&&!hiPace){label='증액';cls='t-up';}
+      else if(!hiEff&&hiPace){label='감액';cls='t-down';}
+      else{label='타게팅점검';cls='t-hold';}
+      return {name,spent,rev,pac,roas,label,cls};
+    });
+    const q={증액:[],캡상향:[],타게팅점검:[],감액:[]};
+    items.forEach(i=>q[i.label].push(i.name));
+    const cell=(names)=>names.length?names.map(n=>`<span class="pill2">${n}</span>`).join(''):'<span class="note">-</span>';
+    $('rb-mtx').innerHTML=`<div class="mtx">
+      <div class="maxis"></div><div class="maxis">저효율 (ROAS&lt;${target})</div><div class="maxis">고효율 (ROAS≥${target})</div>
+      <div class="maxis">페이싱<br>높음</div><div class="mcell"><b>감액</b><br>${cell(q['감액'])}</div><div class="mcell"><b>캡상향</b><br>${cell(q['캡상향'])}</div>
+      <div class="maxis">페이싱<br>낮음</div><div class="mcell"><b>타게팅점검</b><br>${cell(q['타게팅점검'])}</div><div class="mcell"><b>증액</b><br>${cell(q['증액'])}</div>
+    </div>`;
+    const pool=num($('rb-pool').value);
+    let realloc='';
+    const boost=items.filter(i=>i.label==='증액'||i.label==='캡상향');
+    const cut=items.filter(i=>i.label==='감액');
+    if(pool>0 && boost.length){
+      const wsum=boost.reduce((s,i)=>s+i.roas,0)||1;
+      realloc=`<table style="margin-top:12px;"><thead><tr><th>증액 대상</th><th>ROAS</th><th>추가 배분</th></tr></thead><tbody>`+
+        boost.map(i=>`<tr><td>${i.name}</td><td>${i.roas.toFixed(2)}</td><td>+${won(pool*i.roas/wsum)}</td></tr>`).join('')+
+        `</tbody></table><p class="note">총 ${won(pool)}을 고효율 캠페인에 ROAS 비례로 배분한 <b>제안치</b>. 감액 후보: ${cut.map(i=>i.name).join(', ')||'-'}. 실제 실행 전 클라이언트 컨펌 필요.</p>`;
+    }
+    $('rb-out').innerHTML=`<table><thead><tr><th>이름</th><th>소진</th><th>매출</th><th>ROAS</th><th>페이싱</th><th>제안</th></tr></thead><tbody>`+
+      items.map(i=>`<tr><td>${i.name}</td><td>${won(i.spent)}</td><td>${won(i.rev)}</td><td>${i.roas.toFixed(2)}</td><td>${Math.round(i.pac)}%</td><td><span class="tag ${i.cls}">${i.label}</span></td></tr>`).join('')+
+      `</tbody></table>`+realloc;
+  }
+};
+
+/* ---------- 오디언스 & 스케줄러 ---------- */
+const A={
+  sampleData:`이름, 추정규모, 제외오디언스
+리타겟-상품조회-30일, 120000,
+유사-1퍼센트, 900000, 리타겟-상품조회-30일
+카테고리-관심, 1500000, 리타겟-상품조회-30일; 유사-1퍼센트
+기구매-90일, 60000,
+브랜드검색-30일, 80000, 기구매-90일`,
+  sample(){$('au-in').value=this.sampleData; this.run();},
+  parse(){
+    return parseRows($('au-in').value).map(c=>({name:c[0]||'-',size:num(c[1]),
+      excl:(c[2]||'').split(';').map(s=>s.trim()).filter(Boolean)}));
+  },
+  run(){
+    const auds=this.parse(); LS('amc_au',$('au-in').value); this.auds=auds;
+    if(!auds.length){$('au-out').innerHTML='';return;}
+    const th=35; let warns=[];
+    for(let i=0;i<auds.length;i++)for(let j=i+1;j<auds.length;j++){
+      const a=auds[i],b=auds[j];
+      const excluded= a.excl.includes(b.name)||b.excl.includes(a.name);
+      const ov= Math.min(a.size,b.size)/Math.max(a.size,b.size,1)*100;
+      if(!excluded && ov>=th){
+        warns.push(['a-red',`⚠️ <b>${a.name}</b> ↔ <b>${b.name}</b> — 규모비 오버랩 ~${Math.round(ov)}%인데 서로 exclude 안 함 → A/B 오염 위험. 한쪽을 exclude하거나 동시 테스트 금지.`]);
+      }
+    }
+    auds.forEach(a=>auds.forEach(b=>{
+      if(a!==b && a.size> b.size*3 && !a.excl.includes(b.name)){
+        warns.push(['a-amber',`🟡 <b>${a.name}</b>(넓음)가 <b>${b.name}</b>(좁음)를 exclude 안 함 → 중복 노출·예산 낭비 가능. 상위 티어에서 하위 티어 제외 검토.`]);
+      }
+    }));
+    $('au-out').innerHTML = (warns.length?warns.map(w=>`<div class="alert ${w[0]}">${w[1]}</div>`).join('')
+      : '<div class="alert a-ok">✅ 오버랩·tier-exclude 경고 없음.</div>')+
+      `<table><thead><tr><th>오디언스</th><th>추정규모</th><th>제외</th></tr></thead><tbody>`+
+      auds.map(a=>`<tr><td>${a.name}</td><td>${won(a.size)}</td><td style="text-align:left">${a.excl.join(', ')||'-'}</td></tr>`).join('')+`</tbody></table>`;
+  },
+  schedule(){
+    const auds=this.auds|| this.parse(); if(!auds.length){this.run();return;}
+    const slots=Math.max(1,num($('sc-slots').value)||2);
+    const weeks=Math.max(1,num($('sc-weeks').value)||2);
+    const th=num($('sc-th').value)||35;
+    const overlaps=(a,b)=> !(a.excl.includes(b.name)||b.excl.includes(a.name)) &&
+      Math.min(a.size,b.size)/Math.max(a.size,b.size,1)*100>=th;
+    let remaining=[...auds], batches=[];
+    while(remaining.length){
+      let batch=[]; let next=[];
+      remaining.forEach(a=>{
+        if(batch.length<slots && batch.every(b=>!overlaps(a,b))) batch.push(a); else next.push(a);
+      });
+      batches.push(batch); remaining=next;
+    }
+    let wk=1, rows='';
+    batches.forEach((b,i)=>{
+      rows+=`<tr><td>${wk}~${wk+weeks-1}주차</td><td style="text-align:left">${b.map(x=>`<span class="pill2">${x.name}</span>`).join('')}</td></tr>`;
+      wk+=weeks;
+    });
+    $('sc-out').innerHTML=`<table style="margin-top:12px;"><thead><tr><th>기간</th><th>동시 테스트 (슬롯 ${slots})</th></tr></thead><tbody>${rows}</tbody></table>`+
+      `<p class="note">오버랩 ${th}% 이상인 오디언스는 같은 배치에 넣지 않았어요(그리디). 총 ${batches.length}개 배치 · ${batches.length*weeks}주 소요.</p>`;
+  }
+};
+
+/* init */
+tabs();
+$('pace-in').value = LS('amc_pace')||P.sampleData;
+$('rb-in').value   = LS('amc_rb')||R.sampleData;
+$('au-in').value   = LS('amc_au')||A.sampleData;
+P.run(); R.run(); A.run();
+</script>
+</body>
+</html>
