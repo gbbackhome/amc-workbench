@@ -1,325 +1,252 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AMC 전략 워크벤치</title>
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSP Audience Blueprint &amp; Decision Workbench — ASURADA</title>
 <style>
-  :root{color-scheme:light;--bg:#f6f7f9;--card:#fff;--line:#e6e8ec;--ink:#1e242b;--mut:#6b7280;
-    --blue:#2563eb;--green:#16a34a;--amber:#d97706;--red:#dc2626;--chip:#eef2ff;}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Noto Sans KR",sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.5;padding:18px;}
-  .wrap{max-width:1120px;margin:0 auto;}
-  header{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
-  .logo{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);
-    display:flex;align-items:center;justify-content:center;font-size:20px;}
-  h1{font-size:20px;font-weight:800;letter-spacing:-.3px;}
-  .sub{font-size:12px;color:var(--mut);}
-  .discl{font-size:11.5px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;
-    padding:8px 12px;margin:12px 0 14px;}
-  nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-  nav button{font:inherit;font-size:13px;font-weight:700;border:1px solid var(--line);background:#fff;
-    color:var(--mut);border-radius:999px;padding:7px 14px;cursor:pointer;}
-  nav button.on{background:#1e293b;color:#fff;border-color:#1e293b;}
-  .tab{display:none;}
-  .tab.on{display:block;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
-  h2{font-size:16px;font-weight:800;margin-bottom:4px;}
-  .lead{font-size:12.5px;color:var(--mut);margin-bottom:12px;}
-  textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:9px;padding:10px;
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;resize:vertical;}
-  .btn{font:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--line);background:#fff;
-    border-radius:8px;padding:7px 12px;cursor:pointer;margin:8px 6px 0 0;}
-  .btn.pri{background:var(--blue);color:#fff;border-color:var(--blue);}
-  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px;}
-  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:right;white-space:nowrap;}
-  th:first-child,td:first-child{text-align:left;}
-  th{color:var(--mut);font-weight:700;font-size:11.5px;}
-  .tag{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;color:#fff;}
-  .t-ok{background:var(--green);}.t-over{background:var(--red);}.t-under{background:var(--amber);}
-  .t-cap{background:#7c3aed;}.t-up{background:var(--green);}.t-down{background:var(--red);}
-  .t-hold{background:var(--amber);}.t-warn{background:var(--red);}
-  .alert{font-size:12.5px;padding:8px 11px;border-radius:9px;margin-bottom:6px;}
-  .a-red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
-  .a-amber{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
-  .a-ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
-  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;}
-  .fld{display:flex;flex-direction:column;gap:3px;}
-  .fld label{font-size:11px;color:var(--mut);font-weight:700;}
-  .fld input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:12.5px;width:110px;}
-  .note{font-size:11px;color:var(--mut);margin-top:8px;}
-  .mtx{display:grid;grid-template-columns:60px 1fr 1fr;grid-auto-rows:minmax(70px,auto);gap:6px;margin-top:12px;}
-  .mcell{border:1px solid var(--line);border-radius:9px;padding:8px;font-size:11.5px;background:#fafbfc;}
-  .mcell b{font-size:11px;}
-  .maxis{display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mut);font-weight:700;text-align:center;}
-  .pill2{display:inline-block;font-size:11px;background:var(--chip);color:#3730a3;border-radius:6px;padding:1px 6px;margin:2px 3px 0 0;}
-  ul.todo{margin:6px 0 0 18px;font-size:13px;}ul.todo li{margin-bottom:6px;}
-  footer{text-align:center;font-size:11px;color:#9aa3af;margin-top:18px;}
+  :root{--blue:#2f6bff;--bg:#f5f7fb;--card:#fff;--line:#e6ebf5;--ink:#1b2437;--sub:#6b7891;
+        --inc:#0a8f5b;--exc:#d63b3b;--amc:#7b4dff;--p:#c98a00;}
+  *{box-sizing:border-box;font-family:'Pretendard',system-ui,-apple-system,sans-serif}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.5}
+  header{background:linear-gradient(120deg,#2f6bff,#5b8bff);color:#fff;padding:22px 28px}
+  header h1{margin:0;font-size:20px} header p{margin:4px 0 0;opacity:.9;font-size:13px}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .row{display:flex;gap:16px;flex-wrap:wrap} .row>*{flex:1;min-width:210px}
+  h2{font-size:15px;margin:0 0 12px} h3{font-size:13px;color:var(--sub);margin:14px 0 6px}
+  .stat{display:flex;gap:12px;flex-wrap:wrap}
+  .stat div{background:var(--bg);border-radius:10px;padding:10px 14px;min-width:96px}
+  .stat b{font-size:22px;color:var(--blue);display:block} .stat span{font-size:11px;color:var(--sub)}
+  textarea{width:100%;height:90px;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:monospace;font-size:11px}
+  input,select{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;background:#fff}
+  button{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-size:13px;cursor:pointer}
+  details{border:1px solid var(--line);border-radius:10px;margin:6px 0;background:#fff}
+  details>summary{padding:9px 12px;cursor:pointer;font-size:13px;font-weight:600;list-style:none}
+  details details{margin:6px 10px} details details>summary{font-weight:500;font-size:12px}
+  .leaf{padding:8px 14px;font-size:12px;border-top:1px dashed var(--line)}
+  .leaf .exp{color:var(--sub);font-family:monospace;font-size:11px;margin-top:3px;word-break:break-word}
+  .tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;margin:2px 3px 0 0}
+  .t-inc{background:#e4f6ee;color:var(--inc)} .t-exc{background:#fbe6e6;color:var(--exc)}
+  .t-amc{background:#efeaff;color:var(--amc)}
+  .sf{font-size:10px;padding:1px 8px;border-radius:20px;margin-left:6px;color:#fff;background:#2f6bff}
+  .sf.pp{background:#c98a00} .sf.ftv{background:#8a5cff} .sf.con{background:#0a8f5b}
+  .sf.loy{background:#e07b39} .sf.pur{background:#d63b3b}
+  table{width:100%;border-collapse:collapse;font-size:12px} th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+  th{background:var(--bg);color:var(--sub);font-weight:600}
+  .pill{font-size:10px;padding:2px 8px;border-radius:20px;background:#eef2fc;color:var(--blue);margin-left:6px}
+  .rec{border-left:4px solid var(--blue);background:#f0f5ff;padding:12px 14px;border-radius:0 10px 10px 0;margin-top:12px}
+  .rec.warn{border-color:var(--p);background:#fff7e6} .rec b{color:var(--blue)}
+  code{background:#eef2fc;padding:1px 5px;border-radius:4px;font-size:11px} .warn{color:var(--exc);font-size:12px}
+  .muted{color:var(--sub);font-size:12px} label{font-size:12px;cursor:pointer}
 </style>
 </head>
 <body>
+<header>
+  <h1>🏎️ DSP Audience Blueprint &amp; Decision Workbench</h1>
+  <p>Hills DSP (SD/PD × Dog/Cat) · Sub Funnel 엔진 · 설계도 자동생성 + 신규 Audience 배치 판단 · powered by ASURADA</p>
+</header>
 <div class="wrap">
-  <header>
-    <div class="logo">🛒</div>
-    <div><h1>AMC 전략 워크벤치</h1><div class="sub">아마존 광고 전략 도구 · 오프라인 실행 · 데이터는 이 브라우저(localStorage)에만 저장</div></div>
-  </header>
-  <div class="discl">⚠️ 이 툴은 <b>공개 공식 + 가상의 샘플 데이터</b>로만 작동합니다. 실제 클라이언트명·기밀 데이터를 입력하면 이 브라우저에만 저장되지만, <b>공개 URL로 배포할 파일에는 절대 실제 데이터를 하드코딩하지 마세요.</b> 입력값은 외부로 전송되지 않습니다.</div>
 
-  <nav>
-    <button data-t="todo" class="on">📋 오늘 할 일</button>
-    <button data-t="pace">🚦 페이싱 신호등</button>
-    <button data-t="rebal">⚖️ 리밸런싱 매트릭스</button>
-    <button data-t="aud">🎯 오디언스 & A/B</button>
-  </nav>
-
-  <section id="todo" class="tab on">
-    <div class="card">
-      <h2>오늘 뭘 해볼까</h2>
-      <p class="lead">데이터만 붙여넣으면 도는 3가지. 전부 Amazon Ads 콘솔/DSP에서 뽑을 수 있는 데이터예요.</p>
-      <ul class="todo">
-        <li><b>페이싱 점검</b> — 캠페인/라인아이템 예산·소진 CSV를 뽑아 🚦 탭에 붙여넣고, 조기 소진/과소 소진을 골라내기.</li>
-        <li><b>예산 리밸런싱 후보</b> — ⚖️ 탭에서 "감액→증액" 후보를 뽑아 클라이언트 컨펌 자료로.</li>
-        <li><b>A/B 스케줄</b> — 밀린 오디언스 테스트를 🎯 탭 스케줄러에 넣어 충돌 없는 주차별 일정 만들기.</li>
-      </ul>
+  <div class="card">
+    <h2>① 데이터 로드 <span class="pill">audience.csv 자동 로드 · 없으면 수동</span></h2>
+    <div class="row">
+      <div><h3>파일 업로드</h3><input type="file" id="file" accept=".csv" style="width:100%"></div>
+      <div><h3>또는 CSV 붙여넣기 (헤더: Brand,Funnel,Breed,Campaign,Line,Audience)</h3>
+        <textarea id="paste"></textarea><button onclick="loadPaste()" style="margin-top:6px">파싱</button></div>
     </div>
-  </section>
+    <label style="display:block;margin-top:10px"><input type="checkbox" id="rederive" checked="">
+      Campaign 이름에서 Brand/Funnel/Breed/SubFunnel <b>자동 재분류</b> (SEARCH 공식 적용, 권장)</label>
+    <div class="stat" id="stats" style="margin-top:12px"></div>
+  </div>
 
-  <section id="pace" class="tab">
-    <div class="card">
-      <h2>🚦 페이싱 신호등 — 예산 소진 데일리 체크</h2>
-      <p class="lead">형식: <code>이름, 총예산, 누적소진, 경과일수, 총일수</code> (한 줄에 하나, 콤마 구분). 헤더행은 무시돼요.</p>
-      <textarea id="pace-in"></textarea>
-      <div>
-        <button class="btn pri" onclick="P.run()">계산</button>
-        <button class="btn" onclick="P.sample()">샘플 채우기</button>
-        <button class="btn" onclick="P.copy()">결과 복사</button>
-      </div>
-      <div id="pace-alerts" style="margin-top:12px;"></div>
-      <div id="pace-out"></div>
-      <p class="note">페이싱% = 누적소진 ÷ (총예산 × 경과일/총일) × 100. 90~110%=정상, &gt;110%=과다(조기소진 위험), &lt;90%=과소. 🟣캡조기소진 = 소진율≥90%인데 기간은 60%도 안 지남.</p>
-    </div>
-  </section>
+  <div class="card">
+    <h2>② Funnel × Sub Funnel 매트릭스</h2>
+    <div id="matrix" class="muted">CSV를 먼저 로드하세요.</div>
+  </div>
 
-  <section id="rebal" class="tab">
-    <div class="card">
-      <h2>⚖️ 효율 × 페이싱 리밸런싱 매트릭스</h2>
-      <p class="lead">형식: <code>이름, 소진, 매출, 페이싱%</code> · 아래 목표 ROAS를 기준으로 4분면 배치합니다.</p>
-      <div class="row">
-        <div class="fld"><label>목표 ROAS</label><input id="rb-target" type="number" value="3" step="0.1"></div>
-        <div class="fld"><label>재배분할 총예산 풀(선택)</label><input id="rb-pool" type="number" value="0"></div>
-      </div>
-      <textarea id="rb-in" style="margin-top:10px;"></textarea>
-      <div>
-        <button class="btn pri" onclick="R.run()">분석</button>
-        <button class="btn" onclick="R.sample()">샘플 채우기</button>
-      </div>
-      <div id="rb-mtx"></div>
-      <div id="rb-out"></div>
-      <p class="note">ROAS=매출÷소진. 고효율=ROAS≥목표. 캡상향(고효율·과소진)·증액(고효율·여유)·감액(저효율·과소진)·타게팅점검(저효율·부진). 재배분은 <b>제안·검증용</b>이며 자동 실행이 아닙니다.</p>
-    </div>
-  </section>
+  <div class="card">
+    <h2>③ 설계도 (Brand → Funnel → Sub Funnel → Breed → Campaign → Line)</h2>
+    <div id="tree" class="muted">CSV를 먼저 로드하세요.</div>
+  </div>
 
-  <section id="aud" class="tab">
-    <div class="card">
-      <h2>🎯 오디언스 오버랩 체커</h2>
-      <p class="lead">형식: <code>이름, 추정규모, 제외오디언스(;로 여러개)</code>. 규모비 기반 오버랩 근사예요(실제 Affinity Index로 검증 권장).</p>
-      <textarea id="au-in"></textarea>
-      <div>
-        <button class="btn pri" onclick="A.run()">체크</button>
-        <button class="btn" onclick="A.sample()">샘플 채우기</button>
-      </div>
-      <div id="au-out"></div>
-    </div>
-    <div class="card">
-      <h2>🗓️ A/B 테스트 스케줄러</h2>
-      <p class="lead">위 오디언스들을 충돌(오버랩) 없이 주차별 슬롯에 배치합니다.</p>
-      <div class="row">
-        <div class="fld"><label>동시 슬롯 수</label><input id="sc-slots" type="number" value="2"></div>
-        <div class="fld"><label>테스트 기간(주)</label><input id="sc-weeks" type="number" value="2"></div>
-        <div class="fld"><label>오버랩 경고 임계(%)</label><input id="sc-th" type="number" value="35"></div>
-      </div>
-      <div><button class="btn pri" onclick="A.schedule()">스케줄 생성</button></div>
-      <div id="sc-out"></div>
-    </div>
-  </section>
+  <div class="card">
+    <h2>④ Suppression Stack 레퍼런스 <span class="pill">Funnel별 공통 배제셋</span></h2>
+    <div id="stack" class="muted">CSV 로드 후 자동 계산.</div>
+  </div>
 
-  <footer>AMC 전략 워크벤치 · 오프라인 · 참고용(투자·법률·기밀 조언 아님) · 입력 데이터는 외부 전송 없음</footer>
+  <div class="card">
+    <h2>⑤ Audience 세그먼트 라이브러리 <span class="pill">유형·사용빈도</span></h2>
+    <div id="lib" class="muted">CSV 로드 후 표시.</div>
+  </div>
+
+  <div class="card">
+    <h2>⑥ 신규 Audience 배치 판단엔진</h2>
+    <div class="row">
+      <div><h3>신규 오디언스 이름</h3><input id="nName" style="width:100%" placeholder="예: AMC PrimeDay Dog High-Value Predicted"></div>
+      <div><h3>성격</h3><select id="nType" style="width:100%">
+        <option value="positive">Positive 타겟(신규 리치/전환)</option>
+        <option value="suppression">Suppression(이미 전환·구독 → 배제용)</option></select></div>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <div><h3>Brand</h3><select id="nBrand" style="width:100%"><option>SD</option><option>PD</option></select></div>
+      <div><h3>Breed</h3><select id="nBreed" style="width:100%"><option>Dog</option><option>Cat</option></select></div>
+      <div><h3>Funnel</h3><select id="nFunnel" style="width:100%"><option>Awareness</option><option>Consideration</option><option>Loyalty</option><option>Purchase</option></select></div>
+      <div><h3>Sub Funnel</h3><select id="nSub" style="width:100%"><option>Awareness</option><option>FTV</option><option>Consideration</option><option>P+</option><option>Loyalty</option><option>Purchase</option></select></div>
+      <div><h3>독립 성과검증?</h3><select id="nRead" style="width:100%"><option value="yes">예(PrimeDay 기본)</option><option value="no">아니오(단순 확장)</option></select></div>
+    </div>
+    <button style="margin-top:12px" onclick="decide()">판단 실행 🏁</button>
+    <div id="decision"></div>
+  </div>
+
+  <p class="muted">유지보수 · <code>audience.csv</code>만 교체 커밋하면 링크 새로고침 시 전부 자동 갱신.</p>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-const num=v=>{if(v==null)return 0;const n=parseFloat(String(v).replace(/[, %$]/g,''));return isNaN(n)?0:n;};
-const won=n=>Math.round(n).toLocaleString();
-const LS=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){}};
+let DATA=[];
+const FUNNEL_ORDER=['Awareness','Consideration','Loyalty','Purchase'];
+const SUB_ORDER=['B+','FTV','BONUS','Awareness','P+','Consideration','Loyalty','Purchase'];
+const SF_CLS={'P+':'pp','FTV':'ftv','Consideration':'con','Loyalty':'loy','Purchase':'pur'};
 
-function parseRows(txt){
-  return txt.split(/\n/).map(l=>l.trim()).filter(l=>l&&!/^(이름|name|캠페인)/i.test(l))
-    .map(l=>l.split(/[,\t]/).map(c=>c.trim()));
+/* SEARCH 공식 → JS */
+function dBrand(t){ if(/SD/.test(t))return'SD'; if(/PD/.test(t))return'PD'; return''; }
+function dFunnel(t){ if(/Awareness/i.test(t))return'Awareness'; if(/Consideration/i.test(t))return'Consideration';
+  if(/Loyalty/i.test(t))return'Loyalty'; if(/Purchase/i.test(t))return'Purchase'; return''; }
+function dBreed(t){ if(/Dog/i.test(t))return'Dog'; if(/Cat/i.test(t))return'Cat'; return''; }
+function dSub(t){ if(/B\+/.test(t))return'B+'; if(/FIRETV/i.test(t))return'FTV'; if(/BONUS/i.test(t))return'BONUS';
+  if(/Awareness/i.test(t))return'Awareness';
+  if(/Consideration/i.test(t)&&/P\+/.test(t))return'P+';
+  if(/Consideration/i.test(t))return'Consideration';
+  if(/Loyalty/i.test(t))return'Loyalty'; if(/Purchase/i.test(t))return'Purchase'; return''; }
+function enrich(rows){const re=document.getElementById('rederive').checked;
+  return rows.map(r=>{const camp=r.Campaign||'',line=r.Line||'';
+    return {...r,
+      Brand: re?(dBrand(camp)||r.Brand):(r.Brand||dBrand(camp)),
+      Funnel: re?(dFunnel(camp)||r.Funnel):(r.Funnel||dFunnel(camp)),
+      Breed: re?(dBreed(camp+' '+line)||r.Breed):(r.Breed||dBreed(camp+' '+line)),
+      SubFunnel: dSub(camp)||dSub(line)||dFunnel(camp)||r.Funnel||'' };});}
+
+function parseCSV(text){const rows=[];let f='',row=[],q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+    else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}
+      else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;if(f!==''||row.length){row.push(f);rows.push(row);row=[];f='';}}
+      else f+=c;}}
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  const head=rows.shift().map(h=>h.trim());
+  return rows.filter(r=>r.length>1).map(r=>{const o={};head.forEach((h,i)=>o[h]=(r[i]||'').trim());return o;});}
+
+function extract(expr){const inc=[],exc=[];
+  if(!expr||/^\s*NA/i.test(expr)||/performance\+/i.test(expr))return{inc,exc,curated:true};
+  expr.replace(/[()]/g,' ').split(/\s+(?:AND|OR)\s+/i).forEach(p=>{p=p.trim();if(!p)return;
+    let not=false;if(/^NOT\s+/i.test(p)){not=true;p=p.replace(/^NOT\s+/i,'').trim();}
+    if(p)(not?exc:inc).push(p);});
+  return{inc,exc,curated:false};}
+function segType(n){n=n.toLowerCase();
+  if(n.startsWith('ls -')||n.startsWith('ls-'))return'Lifestyle';
+  if(n.startsWith('im -')||n.startsWith('im-'))return'In-Market';
+  if(n.includes('households with children'))return'Demographic';
+  if(n.startsWith('comp'))return'Competitor';
+  if(n.includes('crm'))return'CRM';
+  if(n.includes('brand store'))return'Brand Store RT';
+  if(n.startsWith('amc')||n.includes('(amc)'))return'AMC Custom';
+  if(n.includes('productview')||n.includes('productpurchase')||n.includes('brand views')||n.includes('subscribeandsave')||n.includes('exposed')||/\brt\b/.test(n))return'Retargeting/1P';
+  return'Other';}
+
+function render(){
+  const camps=new Set(DATA.map(d=>d.Campaign)),seg=new Set(),subs=new Set();
+  DATA.forEach(d=>{subs.add(d.SubFunnel);const e=extract(d.Audience);[...e.inc,...e.exc].forEach(s=>seg.add(s));});
+  document.getElementById('stats').innerHTML=
+    `<div><b>${DATA.length}</b><span>Lines</span></div><div><b>${camps.size}</b><span>Campaigns</span></div>
+     <div><b>${new Set(DATA.map(d=>d.Brand)).size}</b><span>Brands</span></div>
+     <div><b>${new Set(DATA.map(d=>d.Funnel)).size}</b><span>Funnels</span></div>
+     <div><b>${subs.size}</b><span>Sub Funnels</span></div>
+     <div><b>${seg.size}</b><span>세그먼트</span></div>`;
+  renderMatrix();renderTree();renderStack();renderLib();
 }
-function tabs(){
-  document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
-    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on'); $(b.dataset.t).classList.add('on');
-  });
+function renderMatrix(){const cell={};DATA.forEach(d=>{const k=d.Brand+'|'+d.Funnel+'|'+d.SubFunnel;cell[k]=(cell[k]||0)+1;});
+  const brands=[...new Set(DATA.map(d=>d.Brand))].sort();
+  let h='<table><tr><th>Brand</th><th>Funnel</th><th>Sub Funnel</th><th>Lines</th></tr>';
+  brands.forEach(b=>FUNNEL_ORDER.forEach(f=>SUB_ORDER.forEach(s=>{const n=cell[b+'|'+f+'|'+s];
+    if(n)h+=`<tr><td>${b}</td><td>${f}</td><td><span class="sf ${SF_CLS[s]||''}">${s}</span></td><td>${n}</td></tr>`;})));
+  document.getElementById('matrix').innerHTML=h+'</table>';}
+function renderTree(){const g={};
+  DATA.forEach(d=>{(((((g[d.Brand]??={})[d.Funnel]??={})[d.SubFunnel]??={})[d.Breed]??={})[d.Campaign]??=[]).push(d);});
+  let h='';
+  for(const b in g){h+=`<details open><summary>🏷️ ${b}</summary>`;
+    FUNNEL_ORDER.filter(f=>g[b][f]).forEach(f=>{h+=`<details><summary>🎯 ${f}</summary>`;
+      SUB_ORDER.filter(s=>g[b][f][s]).forEach(s=>{h+=`<details><summary>↳ <span class="sf ${SF_CLS[s]||''}">${s}</span></summary>`;
+        for(const br in g[b][f][s]){h+=`<details><summary>${br==='Dog'?'🐶':'🐱'} ${br}</summary>`;
+          for(const c in g[b][f][s][br]){h+=`<details><summary>📁 ${c} <span class="pill">${g[b][f][s][br][c].length}</span></summary>`;
+            g[b][f][s][br][c].forEach(l=>{const e=extract(l.Audience);
+              const tags=e.curated?'<span class="sf pp">Amazon-curated (Performance+)</span>':
+                [...e.inc.map(x=>`<span class="tag ${segType(x)==='AMC Custom'?'t-amc':'t-inc'}">＋ ${x}</span>`),
+                 ...e.exc.map(x=>`<span class="tag t-exc">－ ${x}</span>`)].join('');
+              h+=`<div class="leaf"><b>${l.Line}</b><div>${tags}</div></div>`;});
+            h+=`</details>`;}
+          h+=`</details>`;}
+        h+=`</details>`;});
+      h+=`</details>`;});
+    h+=`</details>`;}
+  document.getElementById('tree').innerHTML=h;}
+function stackFor(b,br,f){const L=DATA.filter(d=>d.Brand===b&&d.Breed===br&&d.Funnel===f);if(!L.length)return null;
+  let c=null;L.forEach(l=>{const e=extract(l.Audience);if(e.curated||!e.exc.length)return;
+    const s=new Set(e.exc);c=c===null?s:new Set([...c].filter(x=>s.has(x)));});return[...(c||[])];}
+function renderStack(){const keys=[];DATA.forEach(d=>{const k=d.Brand+'|'+d.Breed+'|'+d.Funnel;if(!keys.includes(k))keys.push(k);});
+  let h='<table><tr><th>Brand</th><th>Breed</th><th>Funnel</th><th>공통 Suppression Stack</th></tr>';
+  keys.sort().forEach(k=>{const[b,br,f]=k.split('|');const st=stackFor(b,br,f)||[];
+    h+=`<tr><td>${b}</td><td>${br}</td><td>${f}</td><td>${st.length?st.map(s=>`<span class="tag t-exc">${s}</span>`).join(''):'<span class="muted">공통 없음</span>'}</td></tr>`;});
+  document.getElementById('stack').innerHTML=h+'</table>';}
+function renderLib(){const m={};DATA.forEach(d=>{const e=extract(d.Audience);
+    e.inc.forEach(s=>{(m[s]??={t:segType(s),inc:0,exc:0}).inc++;});
+    e.exc.forEach(s=>{(m[s]??={t:segType(s),inc:0,exc:0}).exc++;});});
+  const bt={};Object.entries(m).forEach(([s,v])=>{(bt[v.t]??=[]).push([s,v]);});
+  let h='';Object.keys(bt).sort().forEach(t=>{h+=`<h3>${t} <span class="pill">${bt[t].length}</span></h3><table><tr><th>세그먼트</th><th>포함</th><th>배제</th></tr>`;
+    bt[t].sort((a,b)=>(b[1].inc+b[1].exc)-(a[1].inc+a[1].exc)).forEach(([s,v])=>{h+=`<tr><td>${s}</td><td>${v.inc||''}</td><td style="color:var(--exc)">${v.exc||''}</td></tr>`;});
+    h+='</table>';});
+  document.getElementById('lib').innerHTML=h;}
+
+function decide(){
+  const name=document.getElementById('nName').value||'(신규 오디언스)';
+  const type=document.getElementById('nType').value,read=document.getElementById('nRead').value;
+  const b=document.getElementById('nBrand').value,br=document.getElementById('nBreed').value;
+  const f=document.getElementById('nFunnel').value,sub=document.getElementById('nSub').value;
+  const stack=DATA.length?stackFor(b,br,f):null;
+  const stackTxt=stack&&stack.length?stack.map(s=>'NOT '+s).join(' AND '):'(CSV 로드 시 자동 삽입)';
+  let siblings=[];
+  if(DATA.length){const L=DATA.filter(d=>d.Brand===b&&d.Breed===br&&d.Funnel===f&&d.SubFunnel===sub);
+    const s=new Set();L.forEach(l=>{const e=extract(l.Audience);if(!e.curated)e.inc.forEach(x=>{if(!(stack||[]).includes(x))s.add(x);});});siblings=[...s].slice(0,8);}
+  let verdict,cls='',body;
+  if(sub==='P+'){verdict='⛔ P+에는 배치 불가 → 리다이렉트';cls='warn';
+    body=`<p><b>P+(Performance+)는 Amazon 자동 큐레이션</b>이라 커스텀 AMC 오디언스를 넣을 수 없습니다.</p>
+    <p>→ <b>${b} ${br} Consideration(DPVR)</b> 라인 또는 PrimeDay 전용 신규 캠페인으로 보내 테스트하세요.</p>`;
+  } else if(type==='suppression'){verdict='EXCLUSION (기존 라인에 NOT 추가)';cls='warn';
+    body=`<p>배제용 가드레일 → <b>${b} ${br} ${f}</b> 전 라인 배제스택에 <code>NOT ${name}</code> 추가.</p>
+    <p>현재 표준 배제스택: ${stack?stack.map(s=>`<span class="tag t-exc">${s}</span>`).join(''):'CSV 로드 필요'}</p>`;
+  } else if(read==='yes'){verdict='NEW LINE-ITEM (격리 테스트) ★권장★';
+    const ftv=sub==='FTV'?'<li><b>FTV는 디바이스 격리</b>라 non-FTV와 오버랩 낮음 → 테스트 유리</li>':'';
+    body=`<p><b>PrimeDay 성과검증 목적</b> → 독립 라인아이템 격리.</p><ul style="font-size:13px">
+      <li>별도 예산 + 별도 리포팅 라벨</li><li>표준 Suppression Stack 자동 적용</li>
+      <li><b>양방향 상호배제</b>: 신규 라인은 형제 오디언스 NOT, 형제 라인은 신규 오디언스 NOT → 오버랩 0 수렴</li>
+      ${ftv}<li>가능하면 <b>Holdout</b>으로 incrementality 측정</li></ul>
+    <p class="warn">⚠️ 배치 전 AMC <code>audience_overlap</code>로 겹침 % 선측정 권장.</p>
+    <h3>라인 네이밍(예시)</h3><code>${sub==='FTV'?'Video':'Display'}_Both_On-site_${b==='SD'?'W_SD-PRO':'T_PD'}_${f[0]}_PrimeDay-${sub}-Test_${br}</code>
+    <h3>Audience 식</h3><div class="leaf exp">( ${name}${siblings.length?' AND '+siblings.map(s=>'NOT '+s).join(' AND '):''} AND ${stackTxt} )</div>
+    <p class="muted">= [신규타겟] ∩ [형제 상호배제] ∩ [표준 배제스택]. 형제 라인에도 <code>NOT ${name}</code> 추가 필수.</p>`;
+  } else {verdict='INCLUSION (기존 라인 OR 추가) — 조건부';cls='warn';
+    body=`<p>단순 리치 확장이면 유사 라인에 OR로 합침.</p>
+    <p class="warn">⚠️ 성과가 섞여 <b>검증 불가</b>. PrimeDay 입증이 목표면 New Line 권장.</p>
+    <div class="leaf exp">( (기존_타겟 OR ${name}) AND ${stackTxt} )</div>`;}
+  document.getElementById('decision').innerHTML=
+    `<div class="rec ${cls}"><b>판단: ${verdict}</b><div style="margin-top:8px">${body}</div>
+     <p class="muted" style="margin-top:10px">대상: ${b} / ${br} / ${f} / <span class="sf ${SF_CLS[sub]||''}">${sub}</span> · 성격:${type} · 독립검증:${read}</p></div>`;
 }
 
-/* ---------- 페이싱 ---------- */
-const P={
-  sampleData:`이름, 총예산, 누적소진, 경과일수, 총일수
-캠페인-A, 3000000, 2600000, 12, 30
-캠페인-B, 5000000, 1200000, 18, 30
-캠페인-C, 2000000, 1050000, 15, 30
-라인아이템-D, 1500000, 1480000, 10, 30
-라인아이템-E, 4000000, 1900000, 15, 30`,
-  sample(){$('pace-in').value=this.sampleData; this.run();},
-  run(){
-    const rows=parseRows($('pace-in').value); LS('amc_pace',$('pace-in').value);
-    if(!rows.length){$('pace-out').innerHTML='<p class="note">데이터를 넣고 계산을 눌러줘.</p>';$('pace-alerts').innerHTML='';return;}
-    let alerts=[]; const out=rows.map(c=>{
-      const name=c[0]||'-', bud=num(c[1]), spent=num(c[2]), el=num(c[3]), tot=num(c[4])||1;
-      const elapsedFrac=el/tot;
-      const pacing= bud*elapsedFrac>0 ? spent/(bud*elapsedFrac)*100 : 0;
-      const util= bud>0? spent/bud*100 : 0;
-      const remBud=bud-spent, remDay=Math.max(tot-el,0), needDaily= remDay>0? remBud/remDay:0;
-      const capEarly= util>=90 && elapsedFrac<=0.6;
-      let tag,cls;
-      if(pacing>110){tag='과다소진';cls='t-over';} else if(pacing<90){tag='과소소진';cls='t-under';} else {tag='정상';cls='t-ok';}
-      if(capEarly){alerts.push(['a-red',`🟣 ${name} — 소진율 ${Math.round(util)}%인데 기간은 ${Math.round(elapsedFrac*100)}%밖에 안 지남 → 예산 조기 소진 위험`]);}
-      else if(pacing>110){alerts.push(['a-red',`🔴 ${name} — 페이싱 ${Math.round(pacing)}% → 과다 소진, 캡/입찰 점검`]);}
-      else if(pacing<90){alerts.push(['a-amber',`🟡 ${name} — 페이싱 ${Math.round(pacing)}% → 과소 소진, 예산/도달 점검`]);}
-      return {name,bud,spent,pacing,util,remBud,remDay,needDaily,capEarly,tag,cls};
-    });
-    $('pace-alerts').innerHTML = alerts.length? alerts.map(a=>`<div class="alert ${a[0]}">${a[1]}</div>`).join('')
-      : '<div class="alert a-ok">✅ 조기소진·과다/과소 소진 경고 없음. 페이싱 양호.</div>';
-    this.last=out;
-    $('pace-out').innerHTML=`<table><thead><tr><th>이름</th><th>총예산</th><th>누적소진</th><th>소진율</th><th>페이싱</th><th>남은예산</th><th>남은일</th><th>필요 일소진</th><th>상태</th></tr></thead><tbody>`+
-      out.map(r=>`<tr><td>${r.name}</td><td>${won(r.bud)}</td><td>${won(r.spent)}</td><td>${Math.round(r.util)}%</td><td>${Math.round(r.pacing)}%</td><td>${won(r.remBud)}</td><td>${r.remDay}</td><td>${won(r.needDaily)}</td><td><span class="tag ${r.cls}">${r.tag}</span>${r.capEarly?' <span class="tag t-cap">캡조기</span>':''}</td></tr>`).join('')+
-      `</tbody></table>`;
-  },
-  copy(){
-    if(!this.last)return;
-    const h=['이름','총예산','누적소진','소진율%','페이싱%','남은예산','남은일','필요일소진','상태'].join('\t');
-    const b=this.last.map(r=>[r.name,Math.round(r.bud),Math.round(r.spent),Math.round(r.util),Math.round(r.pacing),Math.round(r.remBud),r.remDay,Math.round(r.needDaily),r.tag].join('\t')).join('\n');
-    navigator.clipboard.writeText(h+'\n'+b).then(()=>alert('결과를 클립보드에 복사했어요. 스프레드시트에 붙여넣기(Ctrl+V) 하세요.'));
-  }
-};
+document.getElementById('file').addEventListener('change',e=>{const r=new FileReader();
+  r.onload=ev=>{DATA=enrich(parseCSV(ev.target.result));render();};r.readAsText(e.target.files[0]);});
+function loadPaste(){DATA=enrich(parseCSV(document.getElementById('paste').value));render();}
 
-/* ---------- 리밸런싱 ---------- */
-const R={
-  sampleData:`이름, 소진, 매출, 페이싱%
-캠페인-A, 2600000, 9200000, 130
-캠페인-B, 1200000, 2100000, 70
-캠페인-C, 1050000, 4600000, 105
-캠페인-D, 1480000, 2000000, 118
-캠페인-E, 1900000, 8300000, 88`,
-  sample(){$('rb-in').value=this.sampleData; this.run();},
-  run(){
-    const rows=parseRows($('rb-in').value); LS('amc_rb',$('rb-in').value);
-    const target=num($('rb-target').value)||3;
-    if(!rows.length){$('rb-out').innerHTML='';$('rb-mtx').innerHTML='';return;}
-    const items=rows.map(c=>{
-      const name=c[0]||'-',spent=num(c[1]),rev=num(c[2]),pac=num(c[3]);
-      const roas= spent>0? rev/spent:0;
-      const hiEff= roas>=target, hiPace= pac>=100;
-      let label,cls;
-      if(hiEff&&hiPace){label='캡상향';cls='t-cap';}
-      else if(hiEff&&!hiPace){label='증액';cls='t-up';}
-      else if(!hiEff&&hiPace){label='감액';cls='t-down';}
-      else{label='타게팅점검';cls='t-hold';}
-      return {name,spent,rev,pac,roas,label,cls};
-    });
-    const q={증액:[],캡상향:[],타게팅점검:[],감액:[]};
-    items.forEach(i=>q[i.label].push(i.name));
-    const cell=(names)=>names.length?names.map(n=>`<span class="pill2">${n}</span>`).join(''):'<span class="note">-</span>';
-    $('rb-mtx').innerHTML=`<div class="mtx">
-      <div class="maxis"></div><div class="maxis">저효율 (ROAS&lt;${target})</div><div class="maxis">고효율 (ROAS≥${target})</div>
-      <div class="maxis">페이싱<br>높음</div><div class="mcell"><b>감액</b><br>${cell(q['감액'])}</div><div class="mcell"><b>캡상향</b><br>${cell(q['캡상향'])}</div>
-      <div class="maxis">페이싱<br>낮음</div><div class="mcell"><b>타게팅점검</b><br>${cell(q['타게팅점검'])}</div><div class="mcell"><b>증액</b><br>${cell(q['증액'])}</div>
-    </div>`;
-    const pool=num($('rb-pool').value);
-    let realloc='';
-    const boost=items.filter(i=>i.label==='증액'||i.label==='캡상향');
-    const cut=items.filter(i=>i.label==='감액');
-    if(pool>0 && boost.length){
-      const wsum=boost.reduce((s,i)=>s+i.roas,0)||1;
-      realloc=`<table style="margin-top:12px;"><thead><tr><th>증액 대상</th><th>ROAS</th><th>추가 배분</th></tr></thead><tbody>`+
-        boost.map(i=>`<tr><td>${i.name}</td><td>${i.roas.toFixed(2)}</td><td>+${won(pool*i.roas/wsum)}</td></tr>`).join('')+
-        `</tbody></table><p class="note">총 ${won(pool)}을 고효율 캠페인에 ROAS 비례로 배분한 <b>제안치</b>. 감액 후보: ${cut.map(i=>i.name).join(', ')||'-'}. 실제 실행 전 클라이언트 컨펌 필요.</p>`;
-    }
-    $('rb-out').innerHTML=`<table><thead><tr><th>이름</th><th>소진</th><th>매출</th><th>ROAS</th><th>페이싱</th><th>제안</th></tr></thead><tbody>`+
-      items.map(i=>`<tr><td>${i.name}</td><td>${won(i.spent)}</td><td>${won(i.rev)}</td><td>${i.roas.toFixed(2)}</td><td>${Math.round(i.pac)}%</td><td><span class="tag ${i.cls}">${i.label}</span></td></tr>`).join('')+
-      `</tbody></table>`+realloc;
-  }
-};
-
-/* ---------- 오디언스 & 스케줄러 ---------- */
-const A={
-  sampleData:`이름, 추정규모, 제외오디언스
-리타겟-상품조회-30일, 120000,
-유사-1퍼센트, 900000, 리타겟-상품조회-30일
-카테고리-관심, 1500000, 리타겟-상품조회-30일; 유사-1퍼센트
-기구매-90일, 60000,
-브랜드검색-30일, 80000, 기구매-90일`,
-  sample(){$('au-in').value=this.sampleData; this.run();},
-  parse(){
-    return parseRows($('au-in').value).map(c=>({name:c[0]||'-',size:num(c[1]),
-      excl:(c[2]||'').split(';').map(s=>s.trim()).filter(Boolean)}));
-  },
-  run(){
-    const auds=this.parse(); LS('amc_au',$('au-in').value); this.auds=auds;
-    if(!auds.length){$('au-out').innerHTML='';return;}
-    const th=35; let warns=[];
-    for(let i=0;i<auds.length;i++)for(let j=i+1;j<auds.length;j++){
-      const a=auds[i],b=auds[j];
-      const excluded= a.excl.includes(b.name)||b.excl.includes(a.name);
-      const ov= Math.min(a.size,b.size)/Math.max(a.size,b.size,1)*100;
-      if(!excluded && ov>=th){
-        warns.push(['a-red',`⚠️ <b>${a.name}</b> ↔ <b>${b.name}</b> — 규모비 오버랩 ~${Math.round(ov)}%인데 서로 exclude 안 함 → A/B 오염 위험. 한쪽을 exclude하거나 동시 테스트 금지.`]);
-      }
-    }
-    auds.forEach(a=>auds.forEach(b=>{
-      if(a!==b && a.size> b.size*3 && !a.excl.includes(b.name)){
-        warns.push(['a-amber',`🟡 <b>${a.name}</b>(넓음)가 <b>${b.name}</b>(좁음)를 exclude 안 함 → 중복 노출·예산 낭비 가능. 상위 티어에서 하위 티어 제외 검토.`]);
-      }
-    }));
-    $('au-out').innerHTML = (warns.length?warns.map(w=>`<div class="alert ${w[0]}">${w[1]}</div>`).join('')
-      : '<div class="alert a-ok">✅ 오버랩·tier-exclude 경고 없음.</div>')+
-      `<table><thead><tr><th>오디언스</th><th>추정규모</th><th>제외</th></tr></thead><tbody>`+
-      auds.map(a=>`<tr><td>${a.name}</td><td>${won(a.size)}</td><td style="text-align:left">${a.excl.join(', ')||'-'}</td></tr>`).join('')+`</tbody></table>`;
-  },
-  schedule(){
-    const auds=this.auds|| this.parse(); if(!auds.length){this.run();return;}
-    const slots=Math.max(1,num($('sc-slots').value)||2);
-    const weeks=Math.max(1,num($('sc-weeks').value)||2);
-    const th=num($('sc-th').value)||35;
-    const overlaps=(a,b)=> !(a.excl.includes(b.name)||b.excl.includes(a.name)) &&
-      Math.min(a.size,b.size)/Math.max(a.size,b.size,1)*100>=th;
-    let remaining=[...auds], batches=[];
-    while(remaining.length){
-      let batch=[]; let next=[];
-      remaining.forEach(a=>{
-        if(batch.length<slots && batch.every(b=>!overlaps(a,b))) batch.push(a); else next.push(a);
-      });
-      batches.push(batch); remaining=next;
-    }
-    let wk=1, rows='';
-    batches.forEach((b,i)=>{
-      rows+=`<tr><td>${wk}~${wk+weeks-1}주차</td><td style="text-align:left">${b.map(x=>`<span class="pill2">${x.name}</span>`).join('')}</td></tr>`;
-      wk+=weeks;
-    });
-    $('sc-out').innerHTML=`<table style="margin-top:12px;"><thead><tr><th>기간</th><th>동시 테스트 (슬롯 ${slots})</th></tr></thead><tbody>${rows}</tbody></table>`+
-      `<p class="note">오버랩 ${th}% 이상인 오디언스는 같은 배치에 넣지 않았어요(그리디). 총 ${batches.length}개 배치 · ${batches.length*weeks}주 소요.</p>`;
-  }
-};
-
-/* init */
-tabs();
-$('pace-in').value = LS('amc_pace')||P.sampleData;
-$('rb-in').value   = LS('amc_rb')||R.sampleData;
-$('au-in').value   = LS('amc_au')||A.sampleData;
-P.run(); R.run(); A.run();
+/* audience.csv 자동 로드 (같은 폴더에 있으면 열자마자 렌더) */
+(async()=>{try{const res=await fetch('audience.csv?_='+Date.now());
+  if(res.ok){DATA=enrich(parseCSV(await res.text()));render();}}catch(e){}})();
 </script>
-</body>
-</html>
+
+</body></html>
